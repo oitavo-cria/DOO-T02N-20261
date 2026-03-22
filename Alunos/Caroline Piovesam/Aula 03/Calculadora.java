@@ -5,7 +5,6 @@ public class Calculadora {
 
     Scanner sc = new Scanner(System.in);
     ArrayList<String> vendas = new ArrayList<>();
-    Map<LocalDate, Integer> vendasPorData = new HashMap<>();
 
     double totalCompra = 0;
     int quantidade = 0;
