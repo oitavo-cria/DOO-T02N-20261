@@ -1,53 +1,50 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Loja {
-    String nomeFantasia;
-    String razaoSocial;
-    String cnpj;
-    String cidade;
-    String bairro;
-    String rua;
-    Vendedor[] vendedores;
-    Cliente[] clientes;
-    
-    public Loja(String nomeFantasia, String razaoSocial, String cnpj, String cidade, String bairro, String rua) {
+    private String nomeFantasia;
+    private String razaoSocial;
+    private String cnpj;
+    private String cidade;
+    private String bairro;
+    private String rua;
+    public List<Vendedor> vendedores;
+    public List<Cliente> clientes;
+
+    public Loja(String nomeFantasia, String razaoSocial, String cnpj, 
+                String cidade, String bairro, String rua) {
         this.nomeFantasia = nomeFantasia;
         this.razaoSocial = razaoSocial;
         this.cnpj = cnpj;
         this.cidade = cidade;
         this.bairro = bairro;
         this.rua = rua;
-        vendedores = new Vendedor[2];
-        vendedores[0] = new Vendedor("João Silva", 28, this, "Cascavel", "Centro", "Rua das Flores", 2000.0);
-        vendedores[1] = new Vendedor("Maria Santos", 35, this, "Cascavel", "Centro", "Rua das Flores", 2200.0);
-        clientes = new Cliente[3];
-        clientes[0] = new Cliente("Ana Oliveira", 42, "Cascavel", "Centro", "Rua das Flores");
-        clientes[1] = new Cliente("Pedro Lima", 29, "Cascavel", "Centro", "Av. Brasil");
-        clientes[2] = new Cliente("Carla Souza", 38, "Cascavel", "Centro", "Rua das Flores");
+        this.vendedores = new ArrayList<>();
+        this.clientes = new ArrayList<>();
     }
-    
+
+    public void adicionarVendedor(Vendedor vendedor) {
+        vendedores.add(vendedor);
+    }
+
+    public void adicionarCliente(Cliente cliente) {
+        clientes.add(cliente);
+    }
+
     public int contarClientes() {
-        return clientes.length;
+        return clientes.size();
     }
-    
+
     public int contarVendedores() {
-        return vendedores.length;
+        return vendedores.size();
     }
-    
+
     public void apresentarse() {
-        System.out.println("Loja: " + nomeFantasia);
-        System.out.println("CNPJ: " + cnpj);
-        System.out.println("Endereço: " + cidade + ", " + bairro + ", " + rua);
+        System.out.println("Loja: " + nomeFantasia + ", CNPJ: " + cnpj + 
+                          ", Endereço: " + rua + ", " + bairro + ", " + cidade);
     }
-    
-    public static void main(String[] args) {
-        Loja myPlant = new Loja("My Plant", "My Plant Ltda", "12.345.678/0001-99", "Cascavel", "Centro", "Rua Principal 123");
-        myPlant.apresentarse();
-        System.out.println("Total clientes: " + myPlant.contarClientes());
-        System.out.println("Total vendedores: " + myPlant.contarVendedores());
-        myPlant.vendedores[0].apresentarse();
-        System.out.println("Média salários: R$ " + myPlant.vendedores[0].calcularMedia());
-        System.out.println("Bônus: R$ " + myPlant.vendedores[0].calcularBonus());
-        for (Cliente c : myPlant.clientes) {
-            c.apresentarse();
-        }
+
+    public String getNomeFantasia() {
+        return nomeFantasia;
     }
 }
