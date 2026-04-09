@@ -143,8 +143,8 @@ public class LojaGabrielinhaPrincipal {
 			}
 		}
 		case 4 -> {
-			for (int i=0;i<lojas.get(1).gerentes.size() ;i++) {
-				lojas.get(1).gerentes.get(i).apresentarFuncionario();
+			for (int i=0;i<lojas.get(0).gerentes.size() ;i++) {
+				lojas.get(0).gerentes.get(i).apresentarFuncionario();
 			}
 		}
 		case 0 -> System.out.println("");
@@ -424,13 +424,14 @@ public class LojaGabrielinhaPrincipal {
 			10000, 
 			new double[]{12100.50, 12010.74, 12000.50});
 
-			matriz.AddGerente(gerente2);
 			matriz.AddVendedor(vendedor1);
 			matriz.AddVendedor(vendedor2);
 			matriz.AddVendedor(vendedor3);
-			filial01.AddGerente(gerente1);
 			filial01.AddVendedor(vendedor4);
 			filial01.AddVendedor(vendedor5);
+
+			filial01.AddGerente(gerente1);
+			matriz.AddGerente(gerente2);
 	}
 	
 }
