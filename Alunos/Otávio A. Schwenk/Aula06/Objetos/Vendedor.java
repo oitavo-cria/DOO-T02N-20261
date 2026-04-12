@@ -1,5 +1,7 @@
 package Objetos;
 
+import java.util.List;
+
 public class Vendedor {
 
     private String nome;
@@ -9,13 +11,20 @@ public class Vendedor {
     private String bairro;
     private String rua;
     private double salarioBase;
-    private double salarioRecebido;
+    private List<Double> salarioRecebido;
 
     public Vendedor() {
     }
 
-    public Vendedor(String nome, int idade, String Loja, String cidade, String bairro, String rua, double salarioBase, double salarioRecebido) {
-
+    public Vendedor(String nome, int idade, String Loja, String cidade, String bairro, String rua, double salarioBase, List<Double> salarioRecebido) {
+        setNome(nome);
+        setIdade(idade);
+        setLoja(Loja);
+        setCidade(cidade);
+        setBairro(bairro);
+        setRua(rua);
+        setSalarioBase(salarioBase);
+        setSalarioRecebido(salarioRecebido);
     }
 
     public String getNome() {
@@ -46,7 +55,7 @@ public class Vendedor {
         return salarioBase;
     }
 
-    public double getSalarioRecebido() {
+    public List<Double> getSalarioRecebido() {
         return salarioRecebido;
     }
 
@@ -92,12 +101,37 @@ public class Vendedor {
         }
     }
 
-    public void setSalarioRecebido(double salarioRecebido) {
-        if(salarioRecebido >= 0) {
+    public void setSalarioRecebido(List<Double> salarioRecebido) {
+        if (salarioRecebido != null && salarioRecebido.size() >= 3) {
             this.salarioRecebido = salarioRecebido;
         }
     }
 
+    public void calcularMedia(){
+        double soma = 0;
+        double media = 0;
+
+        if (salarioRecebido == null || salarioRecebido.isEmpty()) {
+            System.out.println("ERRO: Sem media salarial");;
+        }
+
+        for(int i = 0; i < salarioRecebido.size(); i++){
+            soma+=salarioRecebido.get(i);
+        }
+        media = soma/salarioRecebido.size();
+        
+        System.out.printf("A media dos salarios do Funcionario e: %.2f\n", media);
+    }
+
+    public void calcularBonus(){
+        double bonus = 0;
+        bonus = salarioBase * 0.02;
+        System.out.printf("O Bonus do Funcionario e: %.2f\n", bonus);
+    }
+
+    public void apresentarSe(){
+        System.out.printf("Vendedor: %s, %d anos trabalha na %s\n", nome, idade, Loja);
+    }
 
     @Override
     public String toString() {
@@ -107,7 +141,6 @@ public class Vendedor {
         ", bairro=" + bairro +
         ", rua=" + rua +
         ", salarioBase=" + salarioBase +
-        ", salarioRecebido=" + salarioRecebido +
         "]";
     }
 }

@@ -75,6 +75,10 @@ public class Cliente {
 
     @Override
     public String toString() {
-	    return "Pessoa [nome=" + nome + ", idade=" + idade + ", cidade=" + cidade + ", bairro=" + bairro + "]";
+	    return "Pessoa [nome=" + nome + 
+        ", idade=" + idade + 
+        ", cidade=" + cidade + 
+        ", bairro=" + bairro + 
+        "]";
     }
 }

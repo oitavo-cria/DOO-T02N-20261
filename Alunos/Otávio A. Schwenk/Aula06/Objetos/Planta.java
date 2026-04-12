@@ -15,12 +15,12 @@ public class Planta {
     public Planta(){
     }
 
-    public Planta(String planta, double valor, int quant, double total, double desconto, LocalDate data){
+    public Planta(String planta, double valor, int quant, LocalDate data){
         setPlanta(planta);
 		setValor(valor);
 		setQuant(quant);
-		setTotal(total);
-		setDesconto(desconto);
+		setTotal(valor, quant);
+		setDesconto(total);
 		setData(data);
     }
 
@@ -66,16 +66,12 @@ public class Planta {
 		}
 	}
 
-	public void setTotal(double total) {
-		if(total>=0) {
-			this.total = total;
-		}
+	public void setTotal(double valor, int quant) {
+		this.total = valor*quant;
 	}
 
-	public void setDesconto(double desconto){
-		if(desconto>=0){
-			this.desconto = desconto;
-		}
+	public void setDesconto(double total){
+			this.desconto = total*0.05;
 	}
 
 	public void setData(LocalDate data){

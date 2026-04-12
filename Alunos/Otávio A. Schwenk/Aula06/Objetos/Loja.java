@@ -52,17 +52,17 @@ public class Loja {
     public void contarClientes() {
         System.out.println("Clientes: ");
         for(int i = 0; i <clientes.size();i++){
-            System.out.printf(" %d - %s", i+1, clientes.get(i).getNome());
+            System.out.printf(" %d - %s\n", i+1, clientes.get(i).getNome());
         } clientes.size();
-        System.out.printf("Total: %d", clientes.size());
+        System.out.printf("Total: %d\n", clientes.size());
     }
 
     public void contarVendedores() {
         System.out.println("Vendedores: ");
         for(int i = 0; i <vendedores.size();i++){
-            System.out.printf(" %d - %s", i+1, vendedores.get(i).getNome());
+            System.out.printf(" %d - %s\n", i+1, vendedores.get(i).getNome());
         } 
-        System.out.printf("Total: %d", vendedores.size());
+        System.out.printf("Total: %d\n", vendedores.size());
     }
 
     public String getNomeFantasia() {
@@ -132,6 +132,12 @@ public class Loja {
 
     @Override
     public String toString() {
-        return "Loja [nomeFantasia=" + nomeFantasia + ", razaoSocial=" + razaoSocial + ", cnpj=" + cnpj + ", cidade=" + cidade + ", bairro=" + bairro + ", rua=" + rua + "]";
+        return "Loja [nomeFantasia=" + nomeFantasia + 
+        ", razaoSocial=" + razaoSocial + 
+        ", cnpj=" + cnpj + 
+        ", cidade=" + cidade + 
+        ", bairro=" + bairro + 
+        ", rua=" + rua + 
+        "]";
     }
 }

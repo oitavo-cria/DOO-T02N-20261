@@ -5,55 +5,12 @@ import java.util.List;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class Metodos {
+public class Vendas {
     
-    static List<Planta> registro = new ArrayList<>();
+    public static List<Planta> registro = new ArrayList<>();
     static Scanner scan = new Scanner(System.in);
     static DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     static DateTimeFormatter formatadorMes = DateTimeFormatter.ofPattern("MM/yyyy");
-
-    public static void chamarBoasVindas(){
-        System.out.println("---------------LOJA DA DONA GABRIELINHA---------------");
-        System.out.println("Seja Bem-Vindo a calculadora da loja de plantas!");
-        System.out.println("Aqui você pode calcular o valor do troco das plantas!");
-        System.out.println("Basta escolher o item desejado do menu!");
-    }
-
-    public static void chamarMenu(){
-        int escolha = 0;
-        do{
-            System.out.println("--------------------MENU--------------------");
-            System.out.println("[1] - Calcular Preço Total");
-            System.out.println("[2] - Calcular Troco ");
-            System.out.println("[3] - Registro de Vendas");
-            System.out.println("[0] - Sair");
-
-            escolha = scan.nextInt();
-            scan.nextLine();
-            validarEscolha(escolha);
-        }while(escolha!=0);
-    }
-
-    public static void validarEscolha(int escolha){
-        switch(escolha){
-            case 1:
-                calcularPrecoTotal();
-                break;
-            case 2:
-                calcularTroco();
-                break;
-            case 3:
-                mostrarMenuRegisto();
-                break;
-            case 0:
-                System.out.println("Ate a proxima!");
-                System.out.println("---------------------FIM---------------------");
-                break;
-            default:
-                System.out.println("ERRO: Favor escolher uma opcao valida!");
-                break;
-        }
-    }
 
     public static void calcularPrecoTotal(){
         String planta;
@@ -87,7 +44,7 @@ public class Metodos {
         resposta = confirmarAcao();
 
         if(resposta == 1){
-            Planta nova = new Planta(planta, valorUnit, quant, valorTotal, desconto, novaData);
+            Planta nova = new Planta(planta, valorUnit, quant, novaData);
             registro.add(nova);
             System.out.println("Registro realizado com sucesso!");
         }else{
