@@ -29,8 +29,9 @@ public class Funcionario extends Pessoa  {
         return salarioBase;
     }
     public double calcularBonus() {
-        return 0;
+        return salarioBase * 0.2;
     }
+
 
     public void setSalarioBase(double salarioBase) {
         this.salarioBase = salarioBase;
@@ -38,6 +39,14 @@ public class Funcionario extends Pessoa  {
 
     public List<Double> getSalarioRecebido() {
         return salarioRecebido;
+    }
+
+     public double calcularMedia() {
+        double soma = 0;
+        for (double salario : salarioRecebido) {
+            soma += salario;
+        }
+        return soma / salarioRecebido.size();
     }
 
     public void setSalarioRecebido(List<Double> salarioRecebido) {

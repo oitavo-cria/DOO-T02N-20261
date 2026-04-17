@@ -2,9 +2,15 @@ import java.util.Scanner;
 import objetos.Venda;
 import objetos.Vendedor;
 import objetos.VinculoCli;
+import objetos.VinculoGer;
 import objetos.VinculoVen;
 import objetos.Cliente;
+import objetos.Gerente;
+import objetos.Item;
 import objetos.Loja;
+import objetos.Pedido;
+import objetos.ProcessaPedido;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.time.LocalDate;
@@ -12,14 +18,17 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 
 public class Principal {
-   static Scanner scan = new Scanner(System.in);
-   static List <Venda> venda = new ArrayList<>();
-   static List<Vendedor> vendedores = new ArrayList<>();
-   static List<Cliente> clientes = new ArrayList<>();
-   static List<Loja> loja = new ArrayList<>();
-   static List<VinculoVen> vinculosVendedores = new ArrayList<>();
+	static Scanner scan = new Scanner(System.in);
+	static List<Venda> venda = new ArrayList<>();
+	static List<Vendedor> vendedores = new ArrayList<>();
+	static List<Gerente> gerentes = new ArrayList<>(); // Nova lista
+	static List<Cliente> clientes = new ArrayList<>();
+	static List<Loja> loja = new ArrayList<>();
+	static List<Item> itensDoPedido = new ArrayList<>();
+	static List<VinculoVen> vinculosVendedores = new ArrayList<>();
+	static List<VinculoGer> vinculosGerentes = new ArrayList<>();
 	static List<VinculoCli> vinculosClientes = new ArrayList<>();
-   private static double precoTot=0;
+	private static double precoTot=0;
     public static void main(String[] args) {
 		popular();
 		menuPrincipal();
@@ -55,40 +64,49 @@ public class Principal {
 		}
 	}
 	private static void menuGestor() {
-		int escolha=1111111;
+		int escolha = 1111111;
 		do {
-			System.out.println("-----Menu-----");
+			System.out.println("----- Menu Gestor -----");
 			System.out.println("[1] - Lojas");
-			System.out.println("[2] - Calcular media de salário de cada vendedor");
-			System.out.println("[3] - Bonus vendedores");
-			System.out.println("[0] - Sair");
+			System.out.println("[2] - Calcular média salarial (Vendedores e Gerentes)");
+			System.out.println("[3] - Bônus (Vendedores e Gerentes)");
+			System.out.println("[0] - Voltar");
 			
 			escolha = scan.nextInt();
 			scan.nextLine();
 			validarEscolhaGestor(escolha);
-		}while(escolha != 0);
+		} while(escolha != 0);
 	}
+
 	private static void validarEscolhaGestor(int escolha) {
 		switch (escolha) {
-		case 1:
-			mostrarLojas();
-			break;
-		case 2:
-			for(Vendedor v : vendedores) {
-                System.out.println("Vendedor: " + v.getNome() + " - Média: " + v.calcularMedia());
-            }
-			break;
-		case 3:
-			for(Vendedor v : vendedores) {
-                System.out.println("Vendedor: " + v.getNome() + " - Bônus: " + v.calcularBonus());
-            }
-			break;
-		case 0:
-			System.out.println("Obrigado por utilizar o sistema.");
-			break;
-		default:
-			System.out.println("Selecione uma opção valida");
-			break;
+			case 1:
+				mostrarLojas();
+				break;
+			case 2:
+				System.out.println("\n--- MÉDIAS SALARIAIS ---");
+				for(Vendedor v : vendedores) {
+					System.out.println("Vendedor: " + v.getNome() + " - Média: " + v.calcularMedia());
+				}
+				for(Gerente g : gerentes) {
+					System.out.println("Gerente: " + g.getNome() + " - Média: " + g.calcularMedia());
+				}
+				break;
+			case 3:
+				System.out.println("\n--- BÔNUS DOS COLABORADORES ---");
+				for(Vendedor v : vendedores) {
+					System.out.println("Vendedor: " + v.getNome() + " - Bônus (20%): " + v.calcularBonus());
+				}
+				for(Gerente g : gerentes) {
+					System.out.println("Gerente: " + g.getNome() + " - Bônus (35%): " + g.calcularBonus());
+				}
+				break;
+			case 0:
+				System.out.println("Voltando ao menu principal...");
+				break;
+			default:
+				System.out.println("Selecione uma opção válida.");
+				break;
 		}
 	}
 
@@ -127,7 +145,8 @@ public class Principal {
 			exibirResumoLoja(selecionada);
 			
 			System.out.println("[1] Listar Vendedores (Detalhado)");
-			System.out.println("[2] Listar Clientes (Detalhado)");
+			System.out.println("[2] Listar Gerentes (Detalhado)"); // Nova opção
+			System.out.println("[3] Listar Clientes (Detalhado)");
 			System.out.println("[0] Voltar");
 			
 			op = scan.nextInt();
@@ -135,23 +154,39 @@ public class Principal {
 
 			switch (op) {
 				case 1 -> listarVendedoresDaLoja(selecionada);
-				case 2 -> listarClientesDaLoja(selecionada);
+				case 2 -> listarGerentesDaLoja(selecionada); // Novo método
+				case 3 -> listarClientesDaLoja(selecionada);
 				case 0 -> System.out.println("Voltando...");
 				default -> System.out.println("Opção inválida!");
 			}
 		} while (op != 0);
 	}
 
-	
 	private static void exibirResumoLoja(Loja selecionada) {
 		long totalVend = vinculosVendedores.stream().filter(v -> v.getIdLo() == selecionada.getIdLoja()).count();
 		long totalCli = vinculosClientes.stream().filter(v -> v.getIdLo() == selecionada.getIdLoja()).count();
+		long totalGer = vinculosGerentes.stream().filter(v -> v.getIdLo() == selecionada.getIdLoja()).count();
 
 		System.out.println("\n==============================");
 		selecionada.apresentarse();
+		System.out.println("Total de Gerentes: " + totalGer); 
 		System.out.println("Total de Vendedores: " + totalVend);
 		System.out.println("Total de Clientes: " + totalCli);
 		System.out.println("==============================");
+	}
+
+	private static void listarGerentesDaLoja(Loja selecionada) {
+		System.out.println("\n--- QUADRO DE GERÊNCIA ---");
+		vinculosGerentes.stream()
+			.filter(vg -> vg.getIdLo() == selecionada.getIdLoja())
+			.forEach(vg -> {
+				gerentes.stream()
+					.filter(g -> g.getIdGerente() == vg.getIdGer())
+					.forEach(g -> {
+						g.apresentarse();
+						System.out.println("--------------------");
+					});
+			});
 	}
 
 	
@@ -193,6 +228,7 @@ public class Principal {
 			System.out.println("[3] - Registro de Vendas");
 			System.out.println("[4] - Vendas por dia");
 			System.out.println("[5] - Vendas por mês");
+			System.out.println("[6] - Criar Pedido");
 			System.out.println("[0] - Sair");
 			
 			escolha = scan.nextInt();
@@ -219,6 +255,10 @@ public class Principal {
 		case 5:
 			mostraVendasMes();
 			break;	
+		case 6:
+    		criarPedido();
+    	break;
+
 		case 0:
 			System.out.println("Obrigado por utilizar o sistema.");
 			break;
@@ -228,7 +268,27 @@ public class Principal {
 		}
 
 	}
-    private static void mostraVendasMes() {
+    private static void criarPedido() {
+		ProcessaPedido processador = new ProcessaPedido();
+
+		Cliente c = clientes.get(0);
+		Vendedor v = vendedores.get(0);
+		Loja l = loja.get(0);
+		
+		List<Item> itensTeste = new ArrayList<>();
+		itensTeste.add(itensDoPedido.get(0)); // Notebook
+		
+	
+		System.out.println("\n--- CRIAÇÃO ---");
+		Pedido p = processador.processar(LocalDate.now(), c, v, l, itensTeste);
+		p.gerarDescricaoVenda();
+
+		// 2. Teste de Pagamento
+		System.out.println("\n--- TESTANDO PAGAMENTO ---");
+		processador.confirmarPagamento(p);
+	}
+	
+	private static void mostraVendasMes() {
     int contV = 0;
     System.out.println("Digite o mês que deseja pesquisar (MM/yyyy):");
     String input = scan.nextLine();
@@ -349,36 +409,71 @@ public class Principal {
 		}
 		
 	}
-
-	private static void popular(){
-
-	Loja l1 = new Loja("Loja Centro", "Comércio Silva LTDA", "12.345.678/0001-01", "São Paulo", "Sé", "Rua Direita");
-    Loja l2 = new Loja("Loja Sul", "Vendas Costa S.A.", "98.765.432/0001-99", "Porto Alegre", "Ipanema", "Av. Guaíba");
-    loja.add(l1);
-    loja.add(l2);
-
-    vendedores.add(new Vendedor("Ana Silva", 28, l1.getNomeFantasia(), "São Paulo", "Sé", "Rua Direita", 2500.0));
-    vendedores.add(new Vendedor("Bruno Costa", 34, l2.getNomeFantasia(), "Porto Alegre", "Ipanema", "Av. Guaíba", 3000.0));
-    vendedores.add(new Vendedor("Carla Souza", 22, l1.getNomeFantasia(), "Manaus", "Adrianópolis", "Rua Maceió", 2200.0));
-
-    clientes.add(new Cliente("Marcos Oliveira", 30, "São Paulo", "Centro", "Rua A"));
-    clientes.add(new Cliente("Julia Santos", 25, "Porto Alegre", "Sul", "Rua B"));
-    clientes.add(new Cliente("Roberto Lima", 45, "São Paulo", "Moema", "Rua C"));
-    clientes.add(new Cliente("Fernanda Cruz", 31, "Manaus", "Adrianópolis", "Rua D"));
-    clientes.add(new Cliente("Pedro Rocha", 19, "São Paulo", "Sé", "Rua E"));
-
-	vinculosVendedores.add(new VinculoVen(1, 1)); 
-    vinculosVendedores.add(new VinculoVen(2, 2)); 
-    vinculosVendedores.add(new VinculoVen(3, 1)); 
-
-    
-    vinculosClientes.add(new VinculoCli(1, 1)); 
-    vinculosClientes.add(new VinculoCli(2, 2)); 
-	vinculosClientes.add(new VinculoCli(3, 1)); 
-	vinculosClientes.add(new VinculoCli(4, 2)); 
-	vinculosClientes.add(new VinculoCli(5, 1)); 
 	
 
+	private static void popular() {
+		
+		Loja l1 = new Loja("Loja Centro", "Comércio Silva LTDA", "12.345.678/0001-01", "São Paulo", "Sé", "Rua Direita");
+		Loja l2 = new Loja("Loja Sul", "Vendas Costa S.A.", "98.765.432/0001-99", "Porto Alegre", "Ipanema", "Av. Guaíba");
+		loja.add(l1);
+		loja.add(l2);
+
+		Vendedor v1 = new Vendedor("Ana Silva", 28, "São Paulo", "Sé", "Rua Direita", 2500.0, l1);
+		Vendedor v2 = new Vendedor("Bruno Costa", 34, "Porto Alegre", "Ipanema", "Av. Guaíba", 3000.0, l2);
+		Vendedor v3 = new Vendedor("Carla Souza", 22, "Manaus", "Adrianópolis", "Rua Maceió", 2200.0, l1);
+		vendedores.add(v1);
+		vendedores.add(v2);
+		vendedores.add(v3);
+
+		Cliente c1 = new Cliente("Marcos Oliveira", 30, "São Paulo", "Centro", "Rua A");
+		Cliente c2 = new Cliente("Julia Santos", 25, "Porto Alegre", "Sul", "Rua B");
+		Cliente c3 = new Cliente("Roberto Lima", 45, "São Paulo", "Moema", "Rua C");
+		Cliente c4 = new Cliente("Fernanda Cruz", 31, "Manaus", "Adrianópolis", "Rua D");
+		Cliente c5 = new Cliente("Pedro Rocha", 19, "São Paulo", "Sé", "Rua E");
+		clientes.add(c1);
+		clientes.add(c2);
+		clientes.add(c3);
+		clientes.add(c4);
+		clientes.add(c5);
+
+
+		Gerente g1 = new Gerente("Ricardo Souza", 40, "São Paulo", "Centro", "Rua Direita", 6000.0, l1);
+		Gerente g2 = new Gerente("Helena Reis", 38, "Porto Alegre", "Ipanema", "Av. Guaíba", 6500.0, l2);
+		gerentes.add(g1);
+		gerentes.add(g2);
+
+		Item i1 = new Item("Notebook", "Eletrônicos", 3500.00);
+		Item i2 = new Item("Mouse Gamer", "Periféricos", 150.00);
+		Item i3 = new Item("Monitor 24'", "Eletrônicos", 900.00);
+		itensDoPedido.add(i1);
+		itensDoPedido.add(i2);
+		itensDoPedido.add(i3);
+
+		vinculosVendedores.add(new VinculoVen(v1.getIdFuncionario(), l1.getIdLoja())); 
+		vinculosVendedores.add(new VinculoVen(v2.getIdFuncionario(), l2.getIdLoja())); 
+		vinculosVendedores.add(new VinculoVen(v3.getIdFuncionario(), l1.getIdLoja())); 
+
+		vinculosClientes.add(new VinculoCli(c1.getIdCliente(), l1.getIdLoja())); 
+		vinculosClientes.add(new VinculoCli(c2.getIdCliente(), l2.getIdLoja())); 
+		vinculosClientes.add(new VinculoCli(c3.getIdCliente(), l1.getIdLoja())); 
+		vinculosClientes.add(new VinculoCli(c4.getIdCliente(), l2.getIdLoja())); 
+		vinculosClientes.add(new VinculoCli(c5.getIdCliente(), l1.getIdLoja())); 
+
+		vinculosGerentes.add(new VinculoGer(g1.getIdGerente(), l1.getIdLoja()));
+		vinculosGerentes.add(new VinculoGer(g2.getIdGerente(), l2.getIdLoja()));
+
+		List<Item> itensDestaVenda = new ArrayList<>();
+		itensDestaVenda.add(i1);
+		itensDestaVenda.add(i2);
+
+		Pedido p1 = new Pedido(
+			LocalDate.now(),           
+			LocalDate.now(),           
+			LocalDate.now().plusDays(3),
+			c1, v1, l1, 
+			itensDestaVenda
+		);
+		
 	}
 
 }
