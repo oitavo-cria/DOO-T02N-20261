@@ -9,7 +9,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,8 +59,8 @@ public class SerieService{
                         ? "Desconhecida"
                         : show.get("network").get("name").asText();
 
-                LocalDate estreia = parseData(show.get("premiered"));
-                LocalDate termino = parseData(show.get("ended"));
+                String estreia = parseData(show.get("premiered"));
+                String termino = parseData(show.get("ended"));
 
                 List<String> generos = new ArrayList<>();
                 for(JsonNode g : show.get("genres")){
@@ -91,10 +90,10 @@ public class SerieService{
         }
     }
 
-    private LocalDate parseData(JsonNode node){
+    private String parseData(JsonNode node){
         if(node == null || node.isNull() || node.asText().isEmpty()){
             return null;
         }
-        return LocalDate.parse(node.asText());
+        return node.asText();
     }
 }

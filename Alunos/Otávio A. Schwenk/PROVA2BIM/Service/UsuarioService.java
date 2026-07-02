@@ -32,7 +32,7 @@ public class UsuarioService {
         }
 
         try {
-            // cria cópia do usuário para não alterar o original
+           
             Usuario usuarioParaSalvar = new Usuario(
                 usuario.getNome(),
                 usuario.getApelido(),
@@ -52,21 +52,23 @@ public class UsuarioService {
 
     public void atualizarUsuario(Usuario usuarioAtualizado){
         try{
-            if(usuarioAtualizado.getNome()==null){
+
+            if(usuarioAtualizado.getNome() == null){
                 throw new RuntimeException("Nome inválido");
             }
 
-            String nomeArquivo="Usuarios/usuario-"+usuarioAtualizado.getNome().toLowerCase()+".json";
-            File arquivo=new File(nomeArquivo);
+            String nomeArquivo = "Usuarios/usuario-" + usuarioAtualizado.getNome().toLowerCase() + ".json";
+            File arquivo = new File(nomeArquivo);
 
             if(!arquivo.exists()){
                 throw new RuntimeException("Usuário não encontrado para atualização");
             }
 
-            mapeadorJson.writerWithDefaultPrettyPrinter().writeValue(arquivo,usuarioAtualizado);
+            mapeadorJson.writerWithDefaultPrettyPrinter()
+                    .writeValue(arquivo, usuarioAtualizado);
 
         }catch(Exception erro){
-            throw new RuntimeException("Falha ao atualizar usuário",erro);
+            throw new RuntimeException("Falha ao atualizar usuário", erro);
         }
     }
 

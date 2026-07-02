@@ -26,7 +26,7 @@ public class TelaLogin {
     TelaCadastro telaCadastro = new TelaCadastro();
     private UsuarioService usuarioService=new UsuarioService();
 
-    Color corFundoClaro = new Color(229, 227, 230);
+    Color corFundoClaro = new Color(220, 175, 250);
     Color corFundoBotao = new Color(101, 21, 140);
 
     public TelaLogin(){

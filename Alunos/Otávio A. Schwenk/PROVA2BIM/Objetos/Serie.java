@@ -1,5 +1,4 @@
 package Objetos;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,14 +8,17 @@ public class Serie {
     private String nome;
     private double notaGeral;
     private String estado;
-    private LocalDate dataEstreia;
-    private LocalDate dataTermino;
+    private String dataEstreia;
+    private String dataTermino;
     private String descricao;
     private String idioma;
     private String emissora;
     private List<String> generos;
 
-    public Serie(int id, String nome, double notaGeral, String estado, LocalDate dataEstreia){
+    public Serie(){
+    }
+
+    public Serie(int id, String nome, double notaGeral, String estado, String dataEstreia){
         setId(id);
         setNome(nome);
         setNotaGeral(notaGeral);
@@ -24,8 +26,8 @@ public class Serie {
         setDataEstreia(dataEstreia);
     }
 
-    public Serie(int id, String nome, double notaGeral, String estado, String idioma, LocalDate dataEstreia,
-                 LocalDate dataTermino, String emissora, String descricao, List<String> generos){
+    public Serie(int id, String nome, double notaGeral, String estado, String idioma, String dataEstreia,
+                 String dataTermino, String emissora, String descricao, List<String> generos){
         setId(id);
         setNome(nome);
         setNotaGeral(notaGeral);
@@ -78,16 +80,16 @@ public class Serie {
         }
     }
 
-    public void setDataEstreia(LocalDate dataEstreia){
-        if(dataEstreia != null){
+    public void setDataEstreia(String dataEstreia){
+        if(dataEstreia != null && !dataEstreia.isBlank()){
             this.dataEstreia = dataEstreia;
         }else{
             this.dataEstreia = null;
         }
     }
 
-    public void setDataTermino(LocalDate dataTermino){
-        if(dataTermino != null){
+    public void setDataTermino(String dataTermino){
+        if(dataTermino != null && !dataTermino.isBlank()){
             this.dataTermino = dataTermino;
         }else{
             this.dataTermino = null;
@@ -138,11 +140,11 @@ public class Serie {
         return idioma;
     }
 
-    public LocalDate getDataEstreia(){
+    public String getDataEstreia(){
         return dataEstreia;
     }
 
-    public LocalDate getDataTermino(){
+    public String getDataTermino(){
         return dataTermino;
     }
 
